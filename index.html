@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>同步切換螢幕</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            -webkit-tap-highlight-color: transparent; /* 移除手機點擊高亮 */
+        }
+        /* 初始為白色 */
+        body {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<script type="module">
+    // 引入 Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // --- 請在此替換成你的 Firebase 配置 ---
+	const firebaseConfig = {
+	  apiKey: "AIzaSyDlZUfdpauTxQ-MPq0vYIJg6aBT6qw0h0E",
+	  authDomain: "real-time-blackwrite.firebaseapp.com",
+	  databaseURL: "https://real-time-blackwrite-default-rtdb.firebaseio.com",
+	  projectId: "real-time-blackwrite",
+	  storageBucket: "real-time-blackwrite.firebasestorage.app",
+	  messagingSenderId: "588791610738",
+	  appId: "1:588791610738:web:248c30e5ac384dcfbd71eb",
+	  measurementId: "G-167HQZWLB7"
+	};
+    // ------------------------------------
+
+    // 初始化 Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const statusRef = ref(db, 'screenStatus');
+
+    // 監聽資料庫變化 (當 A 裝置改動，B 裝置會立即觸發此處)
+    onValue(statusRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data === 'black') {
+            document.body.style.backgroundColor = 'black';
+        } else {
+            document.body.style.backgroundColor = 'white';
+        }
+    });
+
+    // 點擊事件
+    document.body.addEventListener('click', async () => {
+        // 先獲取目前的狀態
+        const snapshot = await get(statusRef);
+        const currentStatus = snapshot.val();
+        
+        // 切換狀態並寫入資料庫
+        const nextStatus = (currentStatus === 'black') ? 'white' : 'black';
+        set(statusRef, nextStatus);
+    });
+</script>
+</body>
+</html>
