@@ -1,6 +1,6 @@
 # Real-Time Color Sync (跨裝置同步換色螢幕)
 
-可以直接點右邊連結:[[連結](https://firebase.google.com/)](https://chang0107.github.io/BlackWrite/)
+可以直接點右邊連結:[https://chang0107.github.io/BlackWrite/](https://chang0107.github.io/BlackWrite/)
 
 這是一個簡單但強大的網頁工具，能夠在 **手機、平板、電腦** 等多平台瀏覽器上即時同步螢幕顏色。只需點擊螢幕任何處，所有開啟此網頁的裝置都會同步切換 **全黑** 或 **全白** 畫面。
 
